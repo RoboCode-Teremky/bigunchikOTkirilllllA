@@ -15,7 +15,7 @@ public class PlayerControll : MonoBehaviour
     {
         
         relativePosition = Mathf.Clamp(relativePosition += sensitivity*relativeDirection*Time.deltaTime, 0.0f, 1.0f);
-        transform.position = Vector3.Lerp(leftEdge.position, rightEdge.position, relativePosition)*7;
+        transform.position = Vector3.Lerp(leftEdge.position, rightEdge.position, relativePosition);
     }
     void Awake ()
     {
