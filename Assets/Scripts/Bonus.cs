@@ -5,10 +5,11 @@ using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody),typeof(Collider))]public class Bonus : MonoBehaviour
 {
+   
     public int value = 1;
     static public UnityEvent takeBonus = new UnityEvent();
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
