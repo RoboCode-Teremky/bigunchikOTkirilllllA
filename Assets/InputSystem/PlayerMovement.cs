@@ -35,6 +35,15 @@ public partial class @PlayerMovement : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""esc"",
+                    ""type"": ""Button"",
+                    ""id"": ""be26dbc3-996f-4ee1-8d6e-816f54da8f12"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -103,6 +112,17 @@ public partial class @PlayerMovement : IInputActionCollection2, IDisposable
                     ""action"": ""movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7a19f643-9be0-4f2f-bc3d-ec29cbcf471b"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""esc"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -112,6 +132,7 @@ public partial class @PlayerMovement : IInputActionCollection2, IDisposable
         // InGame
         m_InGame = asset.FindActionMap("InGame", throwIfNotFound: true);
         m_InGame_movement = m_InGame.FindAction("movement", throwIfNotFound: true);
+        m_InGame_esc = m_InGame.FindAction("esc", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -172,11 +193,13 @@ public partial class @PlayerMovement : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_InGame;
     private IInGameActions m_InGameActionsCallbackInterface;
     private readonly InputAction m_InGame_movement;
+    private readonly InputAction m_InGame_esc;
     public struct InGameActions
     {
         private @PlayerMovement m_Wrapper;
         public InGameActions(@PlayerMovement wrapper) { m_Wrapper = wrapper; }
         public InputAction @movement => m_Wrapper.m_InGame_movement;
+        public InputAction @esc => m_Wrapper.m_InGame_esc;
         public InputActionMap Get() { return m_Wrapper.m_InGame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -189,6 +212,9 @@ public partial class @PlayerMovement : IInputActionCollection2, IDisposable
                 @movement.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnMovement;
                 @movement.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnMovement;
                 @movement.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnMovement;
+                @esc.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnEsc;
+                @esc.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnEsc;
+                @esc.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnEsc;
             }
             m_Wrapper.m_InGameActionsCallbackInterface = instance;
             if (instance != null)
@@ -196,6 +222,9 @@ public partial class @PlayerMovement : IInputActionCollection2, IDisposable
                 @movement.started += instance.OnMovement;
                 @movement.performed += instance.OnMovement;
                 @movement.canceled += instance.OnMovement;
+                @esc.started += instance.OnEsc;
+                @esc.performed += instance.OnEsc;
+                @esc.canceled += instance.OnEsc;
             }
         }
     }
@@ -203,5 +232,6 @@ public partial class @PlayerMovement : IInputActionCollection2, IDisposable
     public interface IInGameActions
     {
         void OnMovement(InputAction.CallbackContext context);
+        void OnEsc(InputAction.CallbackContext context);
     }
 }
